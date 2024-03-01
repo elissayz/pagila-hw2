@@ -3,15 +3,14 @@
  * but instead of using the NOT IN operator, you are to use a LEFT JOIN.
  */
 
-SELECT title
+SELECT 
+film.title AS title
 FROM film
-LEFT JOIN inventory USING (film_id)
+JOIN inventory USING (film_id)
 LEFT JOIN rental USING (inventory_id)
 LEFT JOIN customer USING (customer_id)
 LEFT JOIN address USING (address_id)
 LEFT JOIN city USING (city_id)
-LEFT JOIN country USING (country_id)
-WHERE country_id = 103 AND film_id IN inventory.film_id
 GROUP BY film.title
+HAVING COUNT(CASE WHEN city.country_id = 103 THEN 1 END) = 0
 ORDER BY title;
-
